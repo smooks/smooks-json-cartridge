@@ -66,11 +66,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class JSONReaderExtendedConfigTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSONReaderExtendedConfigTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSONReaderExtendedConfigTest.class);
 
     @Test
     public void test_simple_smooks_config() throws Exception {
-    	test_config_file("simple_smooks_config");
+        test_config_file("simple_smooks_config");
 
         // Programmatic config....
         Smooks smooks = new Smooks();
@@ -80,7 +80,7 @@ public class JSONReaderExtendedConfigTest {
 
     @Test
     public void test_key_replacement() throws Exception {
-    	test_config_file("key_replacement");
+        test_config_file("key_replacement");
 
         // Programmatic config....
         Smooks smooks = new Smooks();
@@ -96,7 +96,7 @@ public class JSONReaderExtendedConfigTest {
 
     @Test
     public void test_several_replacements() throws Exception {
-    	test_config_file("several_replacements");
+        test_config_file("several_replacements");
 
         // Programmatic config....
         Smooks smooks = new Smooks();
@@ -112,7 +112,7 @@ public class JSONReaderExtendedConfigTest {
 
     @Test
     public void test_configured_different_node_names() throws Exception {
-    	test_config_file("configured_different_node_names");
+        test_config_file("configured_different_node_names");
 
         // Programmatic config....
         Smooks smooks = new Smooks();
@@ -130,7 +130,7 @@ public class JSONReaderExtendedConfigTest {
 
         smooks.filterSource(new StreamSource(getClass().getResourceAsStream("/input-message.jsn")), result);
 
-        assertTrue(XMLUnit.compareXML(StreamUtils.readStreamAsString(getClass().getResourceAsStream("/indent-expected.xml")), result.toString()).identical());
+        assertTrue(XMLUnit.compareXML(StreamUtils.readStreamAsString(getClass().getResourceAsStream("/indent-expected.xml"), "UTF-8"), result.toString()).identical());
     }
 
     private void test_config_file(String testName) throws Exception {
@@ -143,8 +143,8 @@ public class JSONReaderExtendedConfigTest {
         ExecutionContext context = smooks.createExecutionContext();
         String result = SmooksUtil.filterAndSerialize(context, getClass().getResourceAsStream("/test/" + testName + "/input-message.jsn"), smooks);
 
-        if(LOGGER.isDebugEnabled()) {
-        	LOGGER.debug("Result: " + result);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Result: " + result);
         }
 
         assertEquals("/test/" + testName + "/expected.xml", result.getBytes());
@@ -152,9 +152,8 @@ public class JSONReaderExtendedConfigTest {
 
     private void assertEquals(String fileExpected, byte[] actual) throws IOException {
 
-		byte[] expected = StreamUtils.readStream(getClass().getResourceAsStream(fileExpected));
+        byte[] expected = StreamUtils.readStream(getClass().getResourceAsStream(fileExpected));
 
         assertTrue("Expected XML and result XML are not the same!", StreamUtils.compareCharStreams(new ByteArrayInputStream(actual), new ByteArrayInputStream(expected)));
-
-	}
+    }
 }
