@@ -29,7 +29,14 @@
         <developerConnection>scm:git:git@github.com:smooks/smooks-json-cartridge.git</developerConnection>
         <url>git@github.com:smooks/smooks-json-cartridge.git</url>
     </scm>
-    
+         
+    <developers>
+        <developer>
+            <name>Smooks Developers</name>
+            <email>smooks-dev@googlegroups.com</email>
+        </developer>
+    </developers>   
+         
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gpg.skip>true</gpg.skip>
