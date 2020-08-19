@@ -43,14 +43,14 @@
 package org.smooks.cartridges.json;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smooks.Smooks;
 import org.smooks.SmooksUtil;
 import org.smooks.cdr.SmooksResourceConfiguration;
 import org.smooks.container.ExecutionContext;
 import org.smooks.io.StreamUtils;
 import org.smooks.profile.DefaultProfileSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -119,7 +119,7 @@ public class JSONReaderTest {
         SmooksResourceConfiguration config;
 
         config = new SmooksResourceConfiguration("org.xml.sax.driver", "type:Order-List AND from:Acme", JSONReader.class.getName());
-        SmooksUtil.registerResource(config, smooks);
+        smooks.getApplicationContext().getRegistry().registerResource(config);
         SmooksUtil.registerProfileSet(DefaultProfileSet.create("Order-List-Acme-AcmePartner1", new String[]{"type:Order-List", "from:Acme", "to:AcmePartner1"}), smooks);
 
         ExecutionContext context = smooks.createExecutionContext("Order-List-Acme-AcmePartner1");
