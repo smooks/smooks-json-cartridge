@@ -49,23 +49,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smooks.cdr.Parameter;
 import org.smooks.cdr.SmooksResourceConfiguration;
-import org.smooks.cdr.annotation.Config;
-import org.smooks.cdr.annotation.ConfigParam;
-import org.smooks.cdr.annotation.ConfigParam.Use;
 import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.annotation.Initialize;
 import org.smooks.xml.SmooksXMLReader;
 import org.w3c.dom.Element;
 import org.xml.sax.*;
 import org.xml.sax.helpers.AttributesImpl;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Stack;
 
 /**
@@ -186,29 +186,29 @@ public class JSONReader implements SmooksXMLReader {
 	private ExecutionContext executionContext;
 
 
-	@ConfigParam(defaultVal = XML_ROOT)
-    private String rootName;
+	@Inject
+    private String rootName = XML_ROOT;
 
-	@ConfigParam(defaultVal = XML_ARRAY_ELEMENT_NAME)
-    private String arrayElementName;
+	@Inject
+    private String arrayElementName = XML_ARRAY_ELEMENT_NAME;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String keyWhitspaceReplacement;
+	@Inject
+    private Optional<String> keyWhitspaceReplacement;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String keyPrefixOnNumeric;
+	@Inject
+    private Optional<String> keyPrefixOnNumeric;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String illegalElementNameCharReplacement;
+	@Inject
+    private Optional<String> illegalElementNameCharReplacement;
 
-	@ConfigParam(defaultVal = DEFAULT_NULL_VALUE_REPLACEMENT)
-    private String nullValueReplacement;
+	@Inject
+    private String nullValueReplacement = DEFAULT_NULL_VALUE_REPLACEMENT;
 
-    @ConfigParam(defaultVal = "UTF-8")
-    private Charset encoding;
+    @Inject
+    private Charset encoding = StandardCharsets.UTF_8;
 
-    @ConfigParam(defaultVal = "false")
-    private boolean indent;
+    @Inject
+    private Boolean indent = false;
 
     private boolean doKeyReplacement = false;
 
@@ -221,7 +221,7 @@ public class JSONReader implements SmooksXMLReader {
     private HashMap<String, String> keyMap = new HashMap<String, String>();
 
 
-	@Config
+	@Inject
     private SmooksResourceConfiguration config;
 
     private enum Type {
@@ -229,14 +229,14 @@ public class JSONReader implements SmooksXMLReader {
     	ARRAY
     }
 
-    @Initialize
+    @PostConstruct
     public void initialize() {
 		initKeyMap();
 
 		doKeyReplacement = !keyMap.isEmpty();
-		doKeyWhitspaceReplacement = keyWhitspaceReplacement != null;
-		doPrefixOnNumericKey = keyPrefixOnNumeric != null;
-		doIllegalElementNameCharReplacement = illegalElementNameCharReplacement != null;
+		doKeyWhitspaceReplacement = keyWhitspaceReplacement.isPresent();
+		doPrefixOnNumericKey = keyPrefixOnNumeric.isPresent();
+		doIllegalElementNameCharReplacement = illegalElementNameCharReplacement.isPresent();
     }
 
 
@@ -438,15 +438,15 @@ public class JSONReader implements SmooksXMLReader {
 
 		if(!replacedKey) {
 			if(doKeyWhitspaceReplacement) {
-				text = text.replace(" ", keyWhitspaceReplacement);
+				text = text.replace(" ", keyWhitspaceReplacement.get());
 			}
 
 			if(doPrefixOnNumericKey && Character.isDigit(text.charAt(0))) {
-				text = keyPrefixOnNumeric + text;
+				text = keyPrefixOnNumeric.get() + text;
 			}
 
 			if(doIllegalElementNameCharReplacement) {
-				text = text.replaceAll("^[.]|[^a-zA-Z0-9_.-]", illegalElementNameCharReplacement);
+				text = text.replaceAll("^[.]|[^a-zA-Z0-9_.-]", illegalElementNameCharReplacement.get());
 			}
 		}
 		return text;
@@ -457,10 +457,10 @@ public class JSONReader implements SmooksXMLReader {
 	 *
 	 */
 	private void initKeyMap() {
-		Parameter keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP);
+		Parameter<?> keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
 
        if (keyMapParam != null) {
-           Object objValue = keyMapParam.getObjValue();
+           Object objValue = keyMapParam.getValue();
 
            if(objValue instanceof Map) {
                keyMap = (HashMap<String, String>) objValue;
@@ -538,7 +538,7 @@ public class JSONReader implements SmooksXMLReader {
 	 * @return the keyWhitspaceReplacement
 	 */
 	public String getKeyWhitspaceReplacement() {
-		return keyWhitspaceReplacement;
+		return keyWhitspaceReplacement.orElse(nullValueReplacement);
 	}
 
 
@@ -546,7 +546,7 @@ public class JSONReader implements SmooksXMLReader {
 	 * @param keyWhitspaceReplacement the keyWhitspaceReplacement to set
 	 */
 	public void setKeyWhitspaceReplacement(String keyWhitspaceReplacement) {
-		this.keyWhitspaceReplacement = keyWhitspaceReplacement;
+		this.keyWhitspaceReplacement = Optional.ofNullable(keyWhitspaceReplacement);
 	}
 
 
@@ -554,7 +554,7 @@ public class JSONReader implements SmooksXMLReader {
 	 * @return the keyPrefixOnNumeric
 	 */
 	public String getKeyPrefixOnNumeric() {
-		return keyPrefixOnNumeric;
+		return keyPrefixOnNumeric.orElse(null);
 	}
 
 
@@ -562,7 +562,7 @@ public class JSONReader implements SmooksXMLReader {
 	 * @param keyPrefixOnNumeric the keyPrefixOnNumeric to set
 	 */
 	public void setKeyPrefixOnNumeric(String keyPrefixOnNumeric) {
-		this.keyPrefixOnNumeric = keyPrefixOnNumeric;
+		this.keyPrefixOnNumeric = Optional.ofNullable(keyPrefixOnNumeric);
 	}
 
 
@@ -570,7 +570,7 @@ public class JSONReader implements SmooksXMLReader {
 	 * @return the illegalElementNameCharReplacement
 	 */
 	public String getIllegalElementNameCharReplacement() {
-		return illegalElementNameCharReplacement;
+		return illegalElementNameCharReplacement.orElse(null);
 	}
 
 
@@ -579,7 +579,7 @@ public class JSONReader implements SmooksXMLReader {
 	 */
 	public void setIllegalElementNameCharReplacement(
 			String illegalElementNameCharReplacement) {
-		this.illegalElementNameCharReplacement = illegalElementNameCharReplacement;
+		this.illegalElementNameCharReplacement = Optional.ofNullable(illegalElementNameCharReplacement);
 	}
 
 
