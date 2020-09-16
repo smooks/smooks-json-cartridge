@@ -119,7 +119,7 @@ public class JSONReaderTest {
         SmooksResourceConfiguration config;
 
         config = new SmooksResourceConfiguration("org.xml.sax.driver", "type:Order-List AND from:Acme", JSONReader.class.getName());
-        smooks.getApplicationContext().getRegistry().registerResource(config);
+        smooks.getApplicationContext().getRegistry().registerSmooksResourceConfiguration(config);
         SmooksUtil.registerProfileSet(DefaultProfileSet.create("Order-List-Acme-AcmePartner1", new String[]{"type:Order-List", "from:Acme", "to:AcmePartner1"}), smooks);
 
         ExecutionContext context = smooks.createExecutionContext("Order-List-Acme-AcmePartner1");
