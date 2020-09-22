@@ -42,7 +42,7 @@
   =========================LICENSE_END==================================
   -->
 
-<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-1.2.xsd" xmlns:json="https://www.smooks.org/xsd/smooks/json-1.3.xsd">
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd" xmlns:json="https://www.smooks.org/xsd/smooks/json-1.3.xsd">
 
     <!--
     Configure the JSON Reader to read the message into a stream of SAX events.
