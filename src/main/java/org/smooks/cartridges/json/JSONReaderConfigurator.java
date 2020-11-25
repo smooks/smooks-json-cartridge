@@ -42,11 +42,11 @@
  */
 package org.smooks.cartridges.json;
 
-import org.smooks.ReaderConfigurator;
-import org.smooks.cdr.SmooksResourceConfiguration;
 import org.smooks.GenericReaderConfigurator;
-import org.smooks.cdr.Parameter;
+import org.smooks.ReaderConfigurator;
 import org.smooks.assertion.AssertArgument;
+import org.smooks.cdr.Parameter;
+import org.smooks.cdr.ResourceConfig;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -125,7 +125,7 @@ public class JSONReaderConfigurator implements ReaderConfigurator {
         return this;
     }
 
-    public List<SmooksResourceConfiguration> toConfig() {
+    public List<ResourceConfig> toConfig() {
         GenericReaderConfigurator configurator = new GenericReaderConfigurator(JSONReader.class);
 
         configurator.getParameters().setProperty("rootName", rootName);
@@ -142,15 +142,15 @@ public class JSONReaderConfigurator implements ReaderConfigurator {
         configurator.getParameters().setProperty("nullValueReplacement", nullValueReplacement);
         configurator.getParameters().setProperty("encoding", encoding.name());
 
-        List<SmooksResourceConfiguration> configList = configurator.toConfig();
-        SmooksResourceConfiguration config = configList.get(0);
+        List<ResourceConfig> configList = configurator.toConfig();
+        ResourceConfig resourceConfig = configList.get(0);
 
         if(keyMap != null) {
             Parameter keyMapParam = new Parameter(JSONReader.CONFIG_PARAM_KEY_MAP, keyMap);
-            config.setParameter(keyMapParam);
+            resourceConfig.setParameter(keyMapParam);
         }
 
-        config.setTargetProfile(targetProfile);
+        resourceConfig.setTargetProfile(targetProfile);
 
         return configList;
     }

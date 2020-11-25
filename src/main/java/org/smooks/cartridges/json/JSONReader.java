@@ -48,7 +48,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smooks.cdr.Parameter;
-import org.smooks.cdr.SmooksResourceConfiguration;
+import org.smooks.cdr.ResourceConfig;
 import org.smooks.container.ExecutionContext;
 import org.smooks.xml.SmooksXMLReader;
 import org.w3c.dom.Element;
@@ -210,6 +210,9 @@ public class JSONReader implements SmooksXMLReader {
     @Inject
     private Boolean indent = false;
 
+	@Inject
+	private ResourceConfig resourceConfig;
+	
     private boolean doKeyReplacement = false;
 
     private boolean doKeyWhitspaceReplacement = false;
@@ -219,10 +222,6 @@ public class JSONReader implements SmooksXMLReader {
     private boolean doIllegalElementNameCharReplacement = false;
 
     private HashMap<String, String> keyMap = new HashMap<String, String>();
-
-
-	@Inject
-    private SmooksResourceConfiguration config;
 
     private enum Type {
     	OBJECT,
@@ -457,7 +456,7 @@ public class JSONReader implements SmooksXMLReader {
 	 *
 	 */
 	private void initKeyMap() {
-		Parameter<?> keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
+		Parameter<?> keyMapParam = resourceConfig.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
 
        if (keyMapParam != null) {
            Object objValue = keyMapParam.getValue();
