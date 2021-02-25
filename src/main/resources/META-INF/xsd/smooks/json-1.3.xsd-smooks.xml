@@ -49,58 +49,58 @@
     -->
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.NewResourceConfig</resource>
+        <resource>org.smooks.engine.resource.extension.NewResourceConfig</resource>
         <param name="resource">org.smooks.cartridges.json.JSONReader</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.SetOnResourceConfig</resource>
+        <resource>org.smooks.engine.resource.extension.SetOnResourceConfig</resource>
         <param name="setOn">selector</param>
         <param name="value">org.xml.sax.driver</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">rootName</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">arrayElementName</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">nullValueReplacement</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">keyWhitspaceReplacement</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">keyPrefixOnNumeric</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">illegalElementNameCharReplacement</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">encoding</param>
     </resource-config>
 
     <resource-config selector="json:reader">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromAttribute</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromAttribute</resource>
         <param name="attribute">indent</param>
     </resource-config>
 
     <resource-config selector="json:reader keyMap">
-        <resource>org.smooks.cdr.extension.MapToResourceConfigFromText</resource>
+        <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromText</resource>
         <param name="mapTo">keyMap</param>
     </resource-config>
 
