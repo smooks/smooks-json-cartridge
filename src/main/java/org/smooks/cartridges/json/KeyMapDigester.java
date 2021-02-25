@@ -42,13 +42,13 @@
  */
 package org.smooks.cartridges.json;
 
-import java.util.HashMap;
-
 import org.apache.commons.lang.StringUtils;
-import org.smooks.cdr.SmooksConfigurationException;
-import org.smooks.xml.DomUtils;
+import org.smooks.api.SmooksConfigException;
+import org.smooks.support.DomUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.HashMap;
 
 public class KeyMapDigester {
 
@@ -69,7 +69,7 @@ public class KeyMapDigester {
         	String from = DomUtils.getAttributeValue(keyElement, KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE);
 
         	if(StringUtils.isBlank(from)) {
-        		throw new SmooksConfigurationException("The '"+ KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE +"' attribute isn't defined or is empty for the key element: " + keyElement);
+        		throw new SmooksConfigException("The '"+ KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE +"' attribute isn't defined or is empty for the key element: " + keyElement);
         	}
         	from = from.trim();
 

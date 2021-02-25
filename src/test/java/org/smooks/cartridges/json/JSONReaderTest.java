@@ -46,11 +46,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smooks.Smooks;
-import org.smooks.SmooksUtil;
-import org.smooks.cdr.ResourceConfig;
-import org.smooks.container.ExecutionContext;
+import org.smooks.api.ExecutionContext;
+import org.smooks.api.resource.config.ResourceConfig;
+import org.smooks.engine.profile.DefaultProfileSet;
+import org.smooks.engine.resource.config.DefaultResourceConfig;
 import org.smooks.io.StreamUtils;
-import org.smooks.profile.DefaultProfileSet;
+import org.smooks.support.SmooksUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -118,9 +119,9 @@ public class JSONReaderTest {
         Smooks smooks = new Smooks();
         ResourceConfig resourceConfig;
 
-        resourceConfig = new ResourceConfig("org.xml.sax.driver", "type:Order-List AND from:Acme", JSONReader.class.getName());
+        resourceConfig = new DefaultResourceConfig("org.xml.sax.driver", "type:Order-List AND from:Acme", JSONReader.class.getName());
         smooks.getApplicationContext().getRegistry().registerResourceConfig(resourceConfig);
-        SmooksUtil.registerProfileSet(DefaultProfileSet.create("Order-List-Acme-AcmePartner1", new String[]{"type:Order-List", "from:Acme", "to:AcmePartner1"}), smooks);
+        SmooksUtil.registerProfileSet(new DefaultProfileSet("Order-List-Acme-AcmePartner1", new String[]{"type:Order-List", "from:Acme", "to:AcmePartner1"}), smooks);
 
         ExecutionContext context = smooks.createExecutionContext("Order-List-Acme-AcmePartner1");
         String result = SmooksUtil.filterAndSerialize(context, getClass().getResourceAsStream("/test/" + testNumber + "/input-message.jsn"), smooks);
