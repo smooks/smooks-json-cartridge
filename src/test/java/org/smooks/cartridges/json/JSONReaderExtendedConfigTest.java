@@ -48,9 +48,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smooks.Smooks;
 import org.smooks.api.ExecutionContext;
-import org.smooks.io.StreamUtils;
 import org.smooks.io.payload.StringResult;
 import org.smooks.support.SmooksUtil;
+import org.smooks.support.StreamUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.stream.StreamSource;
