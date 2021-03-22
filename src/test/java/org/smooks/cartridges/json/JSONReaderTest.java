@@ -50,8 +50,8 @@ import org.smooks.api.ExecutionContext;
 import org.smooks.api.resource.config.ResourceConfig;
 import org.smooks.engine.profile.DefaultProfileSet;
 import org.smooks.engine.resource.config.DefaultResourceConfig;
-import org.smooks.io.StreamUtils;
 import org.smooks.support.SmooksUtil;
+import org.smooks.support.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
