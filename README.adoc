@@ -1,0 +1,93 @@
+= Smooks JSON Cartridge
+
+image:https://img.shields.io/maven-central/v/org.smooks.cartridges/smooks-json-cartridge[Maven Central]
+image:https://img.shields.io/nexus/s/org.smooks.cartridges/smooks-json-cartridge?server=https%3A%2F%2Foss.sonatype.org[Sonatype Nexus (Snapshots)]
+image:https://github.com/smooks/smooks-json-cartridge/workflows/CI/badge.svg[Build Status]
+
+// tag::smooks-json-cartridge[]
+Processing JSON with Smooks requires a JSON reader to be configured:
+
+.smooks-config.xml
+[source,xml]
+----
+<?xml version="1.0"?>  
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd"
+                      xmlns:json="https://www.smooks.org/xsd/smooks/json-1.3.xsd">  
+
+    <json:reader/>  
+
+</smooks-resource-list>
+----
+
+The XML element name of the root element, the element name of document and the element name of array elements can be configured with the following configuration options:
+
+* `+rootName+`: The name of the root element. Default: `+json+`.
+* `+elementName+`: The name of a sequence element. Default: `+element+`.
+
+JSON allows characters in the key name that aren't allowed in XML element name. To workaround that problem the reader offers multiple solutions. The JSON reader can search and replace whitespaces, illegal characters and the number in key names that start with a number. It is also possible to replace one key name with a completely different name. The following example demonstrates all these features:
+
+.smooks-config.xml
+[source,xml]
+----
+<?xml version="1.0"?>  
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd"
+                      xmlns:json="https://www.smooks.org/xsd/smooks/json-1.3.xsd">  
+
+    <json:reader keyWhitspaceReplacement="_" keyPrefixOnNumeric="n" illegalElementNameCharReplacement=".">  
+        <json:keyMap>  
+            <json:key from="some key">someKey</json:key>  
+            <json:key from="some&amp;key" to="someAndKey"/>  
+        </json:keyMap>  
+    </json:reader>  
+
+</smooks-resource-list>
+----
+
+* `+keyWhitspaceReplacement+`: The replacement character for whitespaces in a json map key. By default this not defined, so that the reader doesn't search for white spaces.
+* `+keyPrefixOnNumeric+`: The prefix character to add if the JSON node name starts with a number. By default this is not defined, so that the reader doesn't search for element names that start with a number.
+* `+illegalElementNameCharReplacement+`: If illegal characters are encountered in a JSON element name then they are replaced with this value.
+
+The following options can also be configured on the JSON reader:
+
+* `+nullValueReplacement+`: The replacement string for JSON NULL values.
+Default is an empty string.
+* `+encoding+`: The default encoding of any JSON message InputStream
+processed by this Reader. Default of 'UTF-8'. 
+
+NOTE: You shouldn't need this configuration parameter and *it will be removed in a future release*. Instead, you should manage the JSON stream Source character encoding by supplying a `+java.io.Reader+` to the `+Smooks.filterSource()+` method.
+
+== Java API
+
+Smooks is programmatically configured to read a JSON configuration using the link:/javadoc/v1.7.1/smooks/org/milyn/json/JSONReaderConfigurator.html[JSONReaderConfigurator]
+class.
+
+[source,java]
+----
+Smooks smooks = new Smooks();  
+
+smooks.setReaderConfig(new JSONReaderConfigurator()  
+        .setRootName("root")  
+        .setArrayElementName("e"));  
+
+// Use Smooks as normal...
+...
+----
+
+== Maven Coordinates
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>org.smooks.cartridges</groupId>
+    <artifactId>smooks-json-cartridge</artifactId>
+    <version>2.0.0-M3</version>
+</dependency>    
+----
+
+== XML Namespace
+
+....
+xmlns:json="https://www.smooks.org/xsd/smooks/json-1.3.xsd"
+....
+// end::smooks-json-cartridge[]
