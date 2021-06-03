@@ -22,7 +22,7 @@ Processing JSON with Smooks requires a JSON reader to be configured:
 The XML element name of the root element, the element name of document and the element name of array elements can be configured with the following configuration options:
 
 * `+rootName+`: The name of the root element. Default: `+json+`.
-* `+elementName+`: The name of a sequence element. Default: `+element+`.
+* `+arrayElementName+`: The name of a sequence element. Default: `+element+`.
 
 JSON allows characters in the key name that aren't allowed in XML element name. To workaround that problem the reader offers multiple solutions. The JSON reader can search and replace whitespaces, illegal characters and the number in key names that start with a number. It is also possible to replace one key name with a completely different name. The following example demonstrates all these features:
 
