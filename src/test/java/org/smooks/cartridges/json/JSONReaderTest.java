@@ -55,6 +55,7 @@ import org.smooks.support.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 
@@ -119,7 +120,7 @@ public class JSONReaderTest {
         Smooks smooks = new Smooks();
         ResourceConfig resourceConfig;
 
-        resourceConfig = new DefaultResourceConfig("org.xml.sax.driver", "type:Order-List AND from:Acme", JSONReader.class.getName());
+        resourceConfig = new DefaultResourceConfig("org.xml.sax.driver", new Properties(), "type:Order-List AND from:Acme", JSONReader.class.getName());
         smooks.getApplicationContext().getRegistry().registerResourceConfig(resourceConfig);
         SmooksUtil.registerProfileSet(new DefaultProfileSet("Order-List-Acme-AcmePartner1", new String[]{"type:Order-List", "from:Acme", "to:AcmePartner1"}), smooks);
 

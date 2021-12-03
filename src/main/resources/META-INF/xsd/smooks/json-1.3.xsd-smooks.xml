@@ -99,7 +99,7 @@
         <param name="attribute">indent</param>
     </resource-config>
 
-    <resource-config selector="json:reader keyMap">
+    <resource-config selector="json:reader/keyMap">
         <resource>org.smooks.engine.resource.extension.MapToResourceConfigFromText</resource>
         <param name="mapTo">keyMap</param>
     </resource-config>
