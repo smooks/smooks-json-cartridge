@@ -42,7 +42,6 @@
  */
 package org.smooks.cartridges.json;
 
-import org.apache.commons.lang.StringUtils;
 import org.smooks.api.SmooksConfigException;
 import org.smooks.support.DomUtils;
 import org.w3c.dom.Element;
@@ -50,7 +49,7 @@ import org.w3c.dom.NodeList;
 
 import java.util.HashMap;
 
-public class KeyMapDigester {
+public final class KeyMapDigester {
 
 	private static final String KEY_MAP_KEY_ELEMENT = "key";
 
@@ -58,30 +57,34 @@ public class KeyMapDigester {
 
 	private static final String KEY_MAP_KEY_ELEMENT_TO_ATTRIBUTE = "to";
 
+	private KeyMapDigester() {
+
+	}
+
 	public static HashMap<String, String> digest(Element keyMapElement) {
 		HashMap<String, String> keyMap = new HashMap<String, String>();
 
 		NodeList keys = keyMapElement.getElementsByTagNameNS("*", KEY_MAP_KEY_ELEMENT);
 
-        for (int i = 0; keys != null && i < keys.getLength(); i++) {
-        	Element keyElement = (Element)keys.item(i);
+		for (int i = 0; i < keys.getLength(); i++) {
+			Element keyElement = (Element) keys.item(i);
 
-        	String from = DomUtils.getAttributeValue(keyElement, KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE);
+			String from = DomUtils.getAttributeValue(keyElement, KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE);
 
-        	if(StringUtils.isBlank(from)) {
-        		throw new SmooksConfigException("The '"+ KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE +"' attribute isn't defined or is empty for the key element: " + keyElement);
-        	}
-        	from = from.trim();
+			if (from == null || from.trim().length() == 0) {
+				throw new SmooksConfigException("The '" + KEY_MAP_KEY_ELEMENT_FROM_ATTRIBUTE + "' attribute isn't defined or is empty for the key element: " + keyElement);
+			}
+			from = from.trim();
 
-        	String value = DomUtils.getAttributeValue(keyElement, KEY_MAP_KEY_ELEMENT_TO_ATTRIBUTE);
-        	if(value == null) {
-        		value = DomUtils.getAllText(keyElement, true);
-        		if(StringUtils.isBlank(value)) {
-        			value = null;
-        		}
-        	}
-        	keyMap.put(from, value);
-        }
+			String value = DomUtils.getAttributeValue(keyElement, KEY_MAP_KEY_ELEMENT_TO_ATTRIBUTE);
+			if (value == null) {
+				value = DomUtils.getAllText(keyElement, true);
+				if (value.trim().length() == 0) {
+					value = null;
+				}
+			}
+			keyMap.put(from, value);
+		}
 
 		return keyMap;
 	}
