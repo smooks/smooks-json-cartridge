@@ -55,7 +55,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.*;
 import org.xml.sax.helpers.AttributesImpl;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import java.io.IOException;
