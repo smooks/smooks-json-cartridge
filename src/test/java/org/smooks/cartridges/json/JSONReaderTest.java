@@ -58,7 +58,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
-import static org.smooks.tck.Assertions.compareCharStreams;
+import static org.smooks.testkit.Assertions.compareCharStreams;
 
 /**
  * @author <a href="mailto:maurice@zeijen.net">maurice@zeijen.net</a>
