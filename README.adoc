@@ -81,7 +81,7 @@ smooks.setReaderConfig(new JSONReaderConfigurator()
 <dependency>
     <groupId>org.smooks.cartridges</groupId>
     <artifactId>smooks-json-cartridge</artifactId>
-    <version>2.0.0-RC3</version>
+    <version>2.0.0-RC4</version>
 </dependency>    
 ----
 
