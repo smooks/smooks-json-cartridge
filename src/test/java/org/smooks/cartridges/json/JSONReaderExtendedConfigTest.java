@@ -48,12 +48,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smooks.Smooks;
 import org.smooks.api.ExecutionContext;
-import org.smooks.io.payload.StringResult;
+import org.smooks.io.sink.StringSink;
+import org.smooks.io.source.StreamSource;
 import org.smooks.support.SmooksUtil;
 import org.smooks.support.StreamUtils;
 import org.xml.sax.SAXException;
 
-import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -127,11 +127,11 @@ public class JSONReaderExtendedConfigTest {
     @Test
     public void test_indent() throws IOException, SAXException {
         Smooks smooks = new Smooks(getClass().getResourceAsStream("/indent-config.xml"));
-        StringResult result = new StringResult();
+        StringSink sink = new StringSink();
 
-        smooks.filterSource(new StreamSource(getClass().getResourceAsStream("/input-message.jsn")), result);
+        smooks.filterSource(new StreamSource<>(getClass().getResourceAsStream("/input-message.jsn")), sink);
 
-        assertTrue(XMLUnit.compareXML(StreamUtils.readStreamAsString(getClass().getResourceAsStream("/indent-expected.xml"), "UTF-8"), result.toString()).identical());
+        assertTrue(XMLUnit.compareXML(StreamUtils.readStreamAsString(getClass().getResourceAsStream("/indent-expected.xml"), "UTF-8"), sink.toString()).identical());
     }
 
     private void test_config_file(String testName) throws Exception {
@@ -145,7 +145,7 @@ public class JSONReaderExtendedConfigTest {
         String result = SmooksUtil.filterAndSerialize(context, getClass().getResourceAsStream("/test/" + testName + "/input-message.jsn"), smooks);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Result: " + result);
+            LOGGER.debug("Result: {}", result);
         }
 
         assertEquals("/test/" + testName + "/expected.xml", result.getBytes());
